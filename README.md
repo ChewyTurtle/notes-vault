@@ -1,4 +1,5 @@
 **System Overview and Tech Choices**
+
 *Description*
 This application is a simple note taking API designed to store notes in a SQLite database.  Each note will be an entry in the notes table and will have a created_at (datetime), id (primary key),
 content (raw text), and optional title(text).
