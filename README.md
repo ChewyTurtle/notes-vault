@@ -1,152 +1,299 @@
+
 **System Overview and Tech Choices**
 
-*Description*
-This application is a simple note taking API designed to store notes in a SQLite database.  Each note will be an entry in the notes table and will have a created_at (datetime), id (primary key),
+  
+
+**Description:**
+This application is a simple note taking API designed to store notes in a SQLite database. Each note will be an entry in the notes table and will have a created_at (datetime), id (primary key),
+
 content (raw text), and optional title(text).
+
 The API will supports creating notes, updating notes, viewing specific notes by id, searching for notes via their title, deleting notes, and viewing all notes
+
 The project can be ran locally in a python environment with the requirements installed via pip, or inside a docker container
+
 A comprehensive unit test suite is also included to ensure the API works as expected with the correct return codes and content
 
+  
+  
 
-*Docker Setup*
-- python:3.13-slim keeps the image small — the slim variant strips out unnecessary OS packages.
-- Copying requirements.txt and installing before copying the rest of the code is intentional 
+**Docker Setup**
+
+-  python:3.13-slim keeps the image small — the slim variant strips out unnecessary OS packages.
+
+-  Copying requirements.txt and installing before copying the rest of the code is intentional
+
 — Docker caches layers, so if your code changes but dependencies don't, it won't reinstall everything
-- SQLite persistence via volume mount works well for local and small scale use, production would need proper db service
 
-*Environment Setup*
-- Requires specific python modules listed in requirements.txt
-- (Optional) Create a python virtual environment using pyvenv
-    - run the following commands
-        python -m venv venv
-        pip install -r requirements.txt
-- Can run pip install command outside of venv if desired
+-  SQLite persistence via volume mount works well for local and small scale use, production would need proper db service
 
-*Python 3.13+*
-- most mature recent version (3.14 just released)
-- supports newer features like typing and f-strings
+  
 
-*SQLAlchemy*
-- ORM layer keeps database interactions in Python rather than raw SQL improving readability
-- Built in protection against SQL injection through parameterized queries
-- Database agnostic - switch from SQLite to PostgreSQL would require minimal code changes
-- Connection pooling handled automatically
-- Integrates cleanly with migration tools like Alembic for schema management
-- Disadvantages: ORM overhead, steeper learning curve due to high amount of features, can obscure actual SQL code
+**Environment Setup**
 
-*SQLite*
-- serverless database
-- needs no configuration at setup time
-- offers high performance for small/medium workloads - perfect for notes use case
+-  Requires specific python modules listed in requirements.txt
 
-*Flask*
-- chosen for it's simplicity and my familiarity with it
-- Perfect for a CRUD API without async requirements
-- minimal footprint
-- FastAPI would be a suitable replacement, offering better async support, and automatic API documentation
-    - should be considered if the scale grows significantly or the requests get more complex
+-  (Optional) Create a python virtual environment using pyvenv
 
-*Gunicorn*
-- AKA (Green Unicorn) Simple WSGI HTTP Server
-- Automatic Restarts
-- Graceful Shutdowns
-- Easy Configuration and lightweight
-- Wide Adoption and often considered the standard for python implementations
+-  run the following commands
 
+python -m venv venv
+
+pip install -r requirements.txt
+
+-  Can run pip install command outside of venv if desired
+
+  
+
+***Python 3.13+***
+
+-  most mature recent version (3.14 just released)
+
+-  supports newer features like typing and f-strings
+
+  
+
+***SQLAlchemy***
+
+-  ORM layer keeps database interactions in Python rather than raw SQL improving readability
+
+-  Built in protection against SQL injection through parameterized queries
+
+-  Database agnostic - switch from SQLite to PostgreSQL would require minimal code changes
+
+-  Connection pooling handled automatically
+
+-  Integrates cleanly with migration tools like Alembic for schema management
+
+-  Disadvantages: ORM overhead, steeper learning curve due to high amount of features, can obscure actual SQL code
+
+  
+
+***SQLite***
+
+-  serverless database
+
+-  needs no configuration at setup time
+
+-  offers high performance for small/medium workloads - perfect for notes use case
+
+  
+
+***Flask***
+
+-  chosen for it's simplicity and my familiarity with it
+
+-  Perfect for a CRUD API without async requirements
+
+-  minimal footprint
+
+-  FastAPI would be a suitable replacement, offering better async support, and automatic API documentation
+
+-  should be considered if the scale grows significantly or the requests get more complex
+
+  
+
+***Gunicorn***
+
+-  AKA (Green Unicorn) Simple WSGI HTTP Server
+
+-  Automatic Restarts
+
+-  Graceful Shutdowns
+
+-  Easy Configuration and lightweight
+
+-  Wide Adoption and often considered the standard for python implementations
+
+  
+  
 
 **Style Guide Considerations**
-- prefer single exit point functions where appropriate
-- include module level docstrings
-- use expected python naming conventions
-    - snake_case for most variables/functions PascalCase for Classes
-- include inline code comments for clarity
+
+-  prefer single exit point functions where appropriate
+
+-  include module level docstrings
+
+-  use expected python naming conventions
+
+-  snake_case for most variables/functions PascalCase for Classes
+
+-  include inline code comments for clarity
+
+  
 
 **Running via Docker compose**
-- ensure you're in the main project directory
-- run the following commands
-    - $ docker compose build --no-cache
-    - $ docker compose up
-- API will accept REST endpoint commands via curl, wget, etc outside of the container and inside the container
 
-***Note: I had to disable Airplay receiver in macOS 26.3.1 due to unwanted traffic on port 5000***
+-  ensure you're in the main project directory
+
+-  run the following commands
+
+	$ docker compose build --no-cache
+
+	$ docker compose up
+
+-  API will accept REST endpoint commands via curl, wget, etc outside of the container and inside the container
+
+  
+
+*****Note: I had to disable Airplay receiver in macOS 26.3.1 due to unwanted traffic on port 5000*****
+
+  
 
 **Running the application Locally**
+
 ***Optional***
-- create a local python virtual environment and run it locally by running the following commands
-    - $ python3 -m venv venv
-    - $ source venv/bin/activate
-    - $ pip install --no-cache-dir -r requirements.txt
+
+-  create a local python virtual environment and run it locally by running the following commands
+
+		$ python3 -m venv venv
+
+		$ source venv/bin/activate
+
+		$ pip install --no-cache-dir -r requirements.txt
+
 
 ***Running with System Python***
-- ensure you're in the main project directory
-- install required python packages with following command
-    - $ pip install --no-cache-dir -r requirements.txt
-- run the following command in terminal/cli
-    - $ python app.py
-- Once running all API Endpoints should work with JSON payloads
+
+-  ensure you're in the main project directory
+
+-  install required python packages with following command
+
+		$ pip install --no-cache-dir -r requirements.txt
+
+-  run the following command in terminal/cli
+
+		$ python app.py
+
+-  Once running all API Endpoints should work with JSON payloads
+
+  
 
 **Running the Unit Tests**
+
 ***Locally***
-- ensure you're in the main project directory and have requirements installed
-- run the following command
-    - $ python -m pytest tests/ -v
+
+-  ensure you're in the main project directory and have requirements installed
+
+-  run the following command
+
+		$ python -m pytest tests/ -v
+
+  
 
 ***Via Docker***
-- run the following command:
-    - $ docker compose run notes-vault python -m pytest tests/ -v
 
+-  run the following command:
+
+		$ docker compose run notes-vault python -m pytest tests/ -v
+
+  
+  
 
 **Usage Examples**
 
+  
+
 Notes can have the following properties
-- id: int - autogenerated by database acts a primary key
-- created_at: DateTime - datetime object autogenerate when note is created
-- title: string (optional) - title of note entry
-- content: string - actual raw text of note limited to 10,000 characters
 
-*create a new note*
-curl -v -X POST http://127.0.0.1:5000/notes \
-  -H "Content-Type: application/json" \
-  -d '{"title": "New Title", "content": "Here is the text content of a new note of up to 10000 characters"}'
+-  id: int - autogenerated by database acts a primary key
 
-*update existing note*
-curl -v -X PATCH http://127.0.0.1:5000/notes/1 \
-  -H "Content-Type: application/json" \
-  -d '{"title" : "Can update title too", "content": "Here is the new text content that will replace whatever was in content before"}'
+-  created_at: DateTime - datetime object autogenerate when note is created
 
-*delete a note by id*
-curl -X DELETE http://127.0.0.1:5000/notes/1
+-  title: string (optional) - title of note entry
 
-*get all notes*
-curl http://127.0.0.1:5000/notes
+-  content: string - actual raw text of note limited to 10,000 characters
 
-*get specific note by id*
-curl http://127.0.0.1:5000/notes/1
+  
 
-*search for note by title*
-curl "http://127.0.0.1:5000/notes/search?title=shopping"
+***create a new note***
+
+	curl -v -X POST http://127.0.0.1:5000/notes \
+
+-H "Content-Type: application/json" \
+
+-d '{"title": "New Title", "content": "Here is the text content of a new note of up to 10000 characters"}'
+
+  
+
+***update existing note***
+
+	curl -v -X PATCH http://127.0.0.1:5000/notes/1 \
+
+-H "Content-Type: application/json" \
+
+-d '{"title" : "Can update title too", "content": "Here is the new text content that will replace whatever was in content before"}'
+
+  
+
+***delete a note by id***
+
+	curl -X DELETE http://127.0.0.1:5000/notes/1
+
+  
+
+***get all notes***
+
+	curl http://127.0.0.1:5000/notes
+
+  
+
+***get specific note by id***
+
+	curl http://127.0.0.1:5000/notes/1
+
+  
+
+***search for note by title***
+
+	curl "http://127.0.0.1:5000/notes/search?title=shopping"
+
+  
 
 **Assumptions, Tradeoff, and future Improvements**
 
-*Assumptions*
-- meant to be use for personal or small scale notes storage and persistence
-- backend API only, no UI required
-- designed to be lightweight and used primarily for text based notes
-- will run locally or inside small container
-- used PATCH for the note update function instead of PUT to allow for partial updates (like just changing the title, or content)
+  
 
-*Tradeoffs*
-- As it is lightweight and using SQLite it will not scale well in currently application
-- Does not currently support async updates
-- Currently does not include any Authentication and designed more for personal or local network use
+***Assumptions***
 
-*Future Improvements*
-- add functionality to keep list of image_paths in db and upload images to separate directory with id named subdirectories containing the images
-- add an updated_at db column to capture latest update timestamps
-- add character limit to title column
-- incorporate basic authentication through use of API keys
-- add more features like searching for specific content in specific columns and allowing filtering
-- investigate secondary tables with foreign key references for storing additional data or data types
-- Pagination if the notes list grows large, returning all notes in a single GET request doesn't scale. A ?page=1&limit=20 pattern is a standard REST way to handle larger data sets
-- include a datetime range filter as a GET function to select specific notes in date range
-- soft deletes with a deleted_at timestamp that will run the actual delete at X time to allow for accidental recovery
+-  meant to be use for personal or small scale notes storage and persistence
+
+-  backend API only, no UI required
+
+-  designed to be lightweight and used primarily for text based notes
+
+-  will run locally or inside small container
+
+-  used PATCH for the note update function instead of PUT to allow for partial updates (like just changing the title, or content)
+
+  
+
+***Tradeoffs***
+
+-  As it is lightweight and using SQLite it will not scale well in currently application
+
+-  Does not currently support async updates
+
+-  Currently does not include any Authentication and designed more for personal or local network use
+
+  
+
+***Future Improvements***
+
+-  add functionality to keep list of image_paths in db and upload images to separate directory with id named subdirectories containing the images
+
+-  add an updated_at db column to capture latest update timestamps
+
+-  add character limit to title column
+
+-  incorporate basic authentication through use of API keys
+
+-  add more features like searching for specific content in specific columns and allowing filtering
+
+-  investigate secondary tables with foreign key references for storing additional data or data types
+
+-  Pagination if the notes list grows large, returning all notes in a single GET request doesn't scale. A ?page=1&limit=20 pattern is a standard REST way to handle larger data sets
+
+-  include a datetime range filter as a GET function to select specific notes in date range
+
+-  soft deletes with a deleted_at timestamp that will run the actual delete at X time to allow for accidental recovery
