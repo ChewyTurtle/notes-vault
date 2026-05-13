@@ -136,8 +136,7 @@ def test_update_note(client):
     client.post("/notes", json=payload, content_type = 'application/json')
 
     # Test update
-    update_payload = {"title" : "Homer", "content" : "All hobbies suck, but if you keep at it, you might find at the end that you’ve managed to kill some precious time."}
-    #All hobbies suck, but if you keep at it, you might find at the end that you’ve managed to kill some precious time.
+    update_payload = {"title" : "Homer hobbies", "content" : "All hobbies suck, but if you keep at it, you might find at the end that you’ve managed to kill some precious time."}
     update_response = client.patch("/notes/1", json=update_payload, content_type = 'application/json')
     update_data = update_response.get_json()
     assert update_response.status_code == 200
