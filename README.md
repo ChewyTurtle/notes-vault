@@ -271,11 +271,11 @@ Notes can have the following properties
 
 ***Tradeoffs***
 
--  As it is lightweight and using SQLite it will not scale well in currently application
+-  As it is lightweight and using SQLite it will not scale well
 
 -  Does not currently support async updates
 
--  Currently does not include any Authentication and designed more for personal or local network use
+-  Currently does not include any authentication and designed more for personal or local network use
 
   
 
