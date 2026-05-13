@@ -6,6 +6,10 @@ Covers API level and data layer testing.
 import pytest
 from app import app, db
 
+large_text = """This is the song that never ends. 
+Yes, it goes on and on, my friend. Some people started singing it not knowing what it was, 
+And they'll continue singing it forever just because... """
+
 @pytest.fixture
 def client():
     app.config['TESTING'] = True # Sets flask to test mode for better error output
@@ -15,7 +19,6 @@ def client():
         db.create_all()
         yield app.test_client()
         db.drop_all() # each test has it's own in memory DB, this deletes them after test runs
-
 
 # Create Note Test with different examples
 @pytest.mark.parametrize("payload,expected_title", [
@@ -40,7 +43,7 @@ def test_create_note(client, payload, expected_title):
 @pytest.mark.parametrize("payload", [
     {},
     {"title" : "Blank Note"},
-    {"title" : "Too Big", "content":  ("X"*10005)},
+    {"title" : "lamb chop", "content":  (large_text*66)},
     ])
 def test_create_note_invalid(client, payload):
     response = client.post('/notes', 
@@ -102,6 +105,8 @@ def test_delete_note(client):
         client.post("/notes", json=pl, content_type = 'application/json')
 
     client.delete('/notes/2')
+    unsuccessful_delete_response = client.delete('/notes/8675309')
+    assert unsuccessful_delete_response.status_code == 404
     all_notes = client.get('/notes').get_json()
     assert len(all_notes) == 2
     assert all_notes[1].get('title') == "S.S. SSSSSSS"
@@ -125,3 +130,20 @@ def test_search_notes(client):
     search_2_data = search_2_results.get_json()
     assert(len(search_2_data)) == 1
     assert "weapon" in search_2_data[0].get('content')
+
+def test_update_note(client):
+    payload =  {"title" : "Homer", "content" : "Just because I don’t care doesn’t mean I don’t understand."}
+    client.post("/notes", json=payload, content_type = 'application/json')
+
+    # Test update
+    update_payload = {"title" : "Homer", "content" : "All hobbies suck, but if you keep at it, you might find at the end that you’ve managed to kill some precious time."}
+    #All hobbies suck, but if you keep at it, you might find at the end that you’ve managed to kill some precious time.
+    update_response = client.patch("/notes/1", json=update_payload, content_type = 'application/json')
+    update_data = update_response.get_json()
+    assert update_response.status_code == 200
+    assert update_data.get('content').endswith("precious time.")
+    assert update_data.get('content').startswith("All hobbies suck")
+
+    # Test 404 when trying to update non-existent note
+    non_note_response = client.patch("notes/8675309", json = {}, content_type = 'application/json')
+    assert non_note_response.status_code == 404

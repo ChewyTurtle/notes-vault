@@ -23,6 +23,9 @@ app = create_app()
 
 @app.route('/notes', methods=['POST'])
 def create_note():
+    """
+    Description: Create a new row in the database with the data sent to the post Endpoint
+    """
     data = request.get_json()
     content = data.get('content', '') if data else ""
     
@@ -44,6 +47,9 @@ def create_note():
 
 @app.route('/notes', methods=['GET'])
 def get_notes():
+    """
+    Description: Run a select all on the notes db and return the results
+    """
     notes = Note.query.all()
     # query.all() returns list, so either all notes will be returned, or a blank
     # list will be returned, follwing API conventions
@@ -55,6 +61,9 @@ def get_notes():
 @app.route('/notes/search', methods=['GET'])
 # Rest path will be like /notes/search?title=shopping
 def search_notes():
+    """
+    Description: query the database using a like filter for the title column
+    """
     title = request.args.get('title', '').strip()
     if not title:
         return jsonify({"error": "Search requires a title parameter"}), 400
@@ -64,6 +73,9 @@ def search_notes():
     
 @app.route('/notes/<int:id>', methods=['GET'])
 def get_note(id):
+    """
+    Description: find note by id and return that note
+    """
     # using get_or_404 built in to handle "note not found" errors
     note = db.session.get(Note, id)
     if not note:
@@ -72,6 +84,9 @@ def get_note(id):
 
 @app.route('/notes/<int:id>', methods=['DELETE'])
 def delete_note(id):
+    """
+    Description: find existing note by id, verify it's present and delete that record from the db
+    """
     # first retrieve note, verify it's there
     note = db.session.get(Note, id)
     if not note:
@@ -81,6 +96,28 @@ def delete_note(id):
     # finally commit the delete so its removed from the db entirely
     db.session.commit()
     return jsonify({"message": f"Note {id} deleted"}), 200
+
+@app.route('/notes/<int:id>', methods=['PATCH'])
+def update_note(id):
+    """
+    Description: find existing note by id and update that notes content using the PATH endpoint
+    """
+    note = db.session.get(Note, id)
+    if not note: # Can't update note if there isn't one
+        return jsonify({"error": f"Note {id} not found"}), 404
+    data = request.get_json()
+    if not data: # Cannot update note if there is no body data to update
+        return jsonify({"error": "Request body required"}), 400
+    if 'content' in data:
+        content = data.get('content', '').strip()
+        if len(content) > 10000: # new content has to still be less than 10,000 characters
+            return jsonify({"error": "Content exceeds limit of 10,000 characters"}), 400
+        note.content = content
+    if 'title' in data: # optionally add title
+        note.title = data.get('title')
+    db.session.commit()
+    return jsonify(note.to_dict()), 200
+
 
 if __name__ == '__main__':
     app.run(debug=True)
