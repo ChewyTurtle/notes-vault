@@ -29,7 +29,7 @@ def create_note():
     data = request.get_json()
     content = data.get('content', '') if data else ""
     
-    # could just check for 'not content' but python short circuits with or statements, and this explict approach reads cleaner
+    # could just check for 'not content' but python short circuits with or statements, and this explicit approach reads cleaner
     if not data or not content:
          # immediately return error and 400, cannot write invalid content to db
          return jsonify({"error": "Request body must include content"}), 400
@@ -52,7 +52,7 @@ def get_notes():
     """
     notes = Note.query.all()
     # query.all() returns list, so either all notes will be returned, or a blank
-    # list will be returned, follwing API conventions
+    # list will be returned, following API conventions
 
     # list comprehension embedded directly in jsonify() call for conciseness
     # could extract to a separate variable if readability is a concern
