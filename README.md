@@ -67,6 +67,8 @@ A comprehensive unit test suite is also included to ensure the API works as expe
     - $ docker compose up
 - API will accept REST endpoint commands via curl, wget, etc outside of the container and inside the container
 
+***Note: I had to disable Airplay receiver in macOS 26.3.1 due to unwanted traffic on port 5000***
+
 **Running the application Locally**
 ***Optional***
 - create a local python virtual environment and run it locally by running the following commands
