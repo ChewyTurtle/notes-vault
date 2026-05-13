@@ -20,7 +20,7 @@
 - Integrates cleanrly with migration tools like Alembic for schema management
 - Disadvantages: ORM overhead, steeper learning curve due to high amount of features, can obscure actual SQL code
 
-*SQLLite*
+*SQLite*
 - serverless database
 - needs no configuration at setup time
 - offers high performance for small/medium workloads - perfect for notes use case
