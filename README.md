@@ -80,6 +80,7 @@ curl http://127.0.0.1:5000/notes/1
 
 *search for note by title*
 curl http://127.0.0.1:5000/notes/1/notes/search?title=?shopping"
+
 **Assumptions, Tradeoff, and future Improvements**
 
 *Assumptions*
