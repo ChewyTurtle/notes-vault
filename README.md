@@ -19,13 +19,13 @@ A comprehensive unit test suite is also included to ensure the API works as expe
 
 **Docker Setup**
 
--  python:3.13-slim keeps the image small — the slim variant strips out unnecessary OS packages.
+- python:3.13-slim keeps the image small — the slim variant strips out unnecessary OS packages.
 
--  Copying requirements.txt and installing before copying the rest of the code is intentional
+- Copying requirements.txt and installing before copying the rest of the code is intentional
 
-— Docker caches layers, so if your code changes but dependencies don't, it won't reinstall everything
+- Docker caches layers, so if your code changes but dependencies don't, it won't reinstall everything
 
--  SQLite persistence via volume mount works well for local and small scale use, production would need proper db service
+- SQLite persistence via volume mount works well for local and small scale use, production would need proper db service
 
   
 
@@ -37,9 +37,9 @@ A comprehensive unit test suite is also included to ensure the API works as expe
 
 -  run the following commands
 
-python -m venv venv
+        python -m venv venv
 
-pip install -r requirements.txt
+        pip install -r requirements.txt
 
 -  Can run pip install command outside of venv if desired
 
@@ -208,11 +208,11 @@ Notes can have the following properties
 
 ***create a new note***
 
-	curl -v -X POST http://127.0.0.1:5000/notes \
+	curl -v -X POST http://127.0.0.1:5000/notes \   
 
--H "Content-Type: application/json" \
+    -H "Content-Type: application/json" \
 
--d '{"title": "New Title", "content": "Here is the text content of a new note of up to 10000 characters"}'
+    -d '{"title": "New Title", "content": "Here is the text content of a new note of up to 10000 characters"}'
 
   
 
@@ -220,9 +220,9 @@ Notes can have the following properties
 
 	curl -v -X PATCH http://127.0.0.1:5000/notes/1 \
 
--H "Content-Type: application/json" \
+    -H "Content-Type: application/json" \
 
--d '{"title" : "Can update title too", "content": "Here is the new text content that will replace whatever was in content before"}'
+    -d '{"title" : "Can update title too", "content": "Here is the new text content that will replace whatever was in content before"}'
 
   
 
