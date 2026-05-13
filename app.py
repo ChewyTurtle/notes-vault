@@ -29,7 +29,7 @@ def create_note():
     data = request.get_json()
     content = data.get('content', '') if data else ""
     
-    # could just check for 'not content' but python short circuits with or statements, and this explict appraoch reads cleaner
+    # could just check for 'not content' but python short circuits with or statements, and this explict approach reads cleaner
     if not data or not content:
          # immediately return error and 400, cannot write invalid content to db
          return jsonify({"error": "Request body must include content"}), 400
@@ -76,7 +76,6 @@ def get_note(id):
     """
     Description: find note by id and return that note
     """
-    # using get_or_404 built in to handle "note not found" errors
     note = db.session.get(Note, id)
     if not note:
         return jsonify({"error": f"Note {id} not found"}), 404
@@ -93,7 +92,7 @@ def delete_note(id):
         return jsonify({"error": f"Note {id} not found"}), 404
     # then send delete command
     db.session.delete(note)
-    # finally commit the delete so its removed from the db entirely
+    # finally commit the delete so it's removed from the db entirely
     db.session.commit()
     return jsonify({"message": f"Note {id} deleted"}), 200
 
