@@ -1,5 +1,11 @@
 **System Overview and Tech Choices**
 
+*Docker Setup*
+- python:3.13-slim keeps the image small — the slim variant strips out unnecessary OS packages.
+- Copying requirements.txt and installing before copying the rest of the code is intentional 
+— Docker caches layers, so if your code changes but dependencies don't, it won't reinstall everything
+- SQLite persistence via volume mount works well for local and small scale use, production would need proper db service
+
 *Environment Setup*
 - Requires specific python modules listed in requiements.txt
 - (Optional) Create a python virutal environmnet using pyvenv
