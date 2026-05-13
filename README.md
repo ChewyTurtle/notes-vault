@@ -67,7 +67,7 @@ curl -v -X POST http://127.0.0.1:5000/notes \
 *update existing note*
 curl -v -X PATCH http://127.0.0.1:5000/notes/1 \
   -H "Content-Type: application/json" \
-  -d '{"content": "Here is the new text content that will replace whatever was in content before"}'
+  -d '{"title" : "Can update title too", "content": "Here is the new text content that will replace whatever was in content before"}'
 
 *delete a note by id*
 curl -X DELETE http://127.0.0.1:5000/notes/1
