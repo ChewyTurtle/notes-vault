@@ -298,3 +298,5 @@ Notes can have the following properties
 -  include a datetime range filter as a GET function to select specific notes in date range
 
 -  soft deletes with a deleted_at timestamp that will run the actual delete at X time to allow for accidental recovery
+
+-  Incorporate a logging feature that will allow for real time logs while service is running
